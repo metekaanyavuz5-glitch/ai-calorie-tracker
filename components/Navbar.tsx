@@ -1,30 +1,40 @@
 import Link from "next/link";
+import { Flame } from "lucide-react";
+import LogoutButton from "@/components/LogoutButton";
 
-function FlameLogo() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-7 w-7 shrink-0" aria-hidden="true">
-      <rect width="24" height="24" rx="6" className="fill-blue-600" />
-      <path
-        fill="#ffffff"
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M12.963 2.286a.75.75 0 0 0-1.071-.136 9.742 9.742 0 0 0-3.539 6.176 7.547 7.547 0 0 1-1.705-1.715.75.75 0 0 0-1.152-.082A9 9 0 1 0 15.68 4.534a7.46 7.46 0 0 1-2.717-2.248ZM15.75 14.25a3.75 3.75 0 1 1-7.313-1.172c.628.465 1.35.81 2.133 1a5.99 5.99 0 0 1 1.925-3.545 3.75 3.75 0 0 1 3.255 3.717Z"
-      />
-    </svg>
-  );
-}
+export default function Navbar({ userEmail }: { userEmail?: string }) {
+  const initial = userEmail ? userEmail.trim().charAt(0).toUpperCase() : null;
 
-export default function Navbar({ children }: { children?: React.ReactNode }) {
   return (
-    <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/90 px-4 py-3 backdrop-blur dark:border-neutral-800 dark:bg-neutral-900/90 sm:px-6">
-      <div className="mx-auto flex max-w-6xl items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <FlameLogo />
-          <span className="text-lg font-semibold text-neutral-900 dark:text-neutral-50">
-            AI Calorie Tracker
+    <header className="sticky top-0 z-40 border-b border-slate-200/80 bg-white/85 backdrop-blur-md dark:border-white/10 dark:bg-slate-950/85">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+        <Link href="/" className="flex items-center gap-2.5">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 shadow-sm shadow-indigo-500/30">
+            <Flame className="h-5 w-5 text-white" strokeWidth={2.25} aria-hidden="true" />
+          </span>
+          <span className="leading-tight">
+            <span className="block text-[15px] font-semibold tracking-tight text-slate-900 dark:text-white">
+              AI Calorie Tracker
+            </span>
+            <span className="hidden text-xs text-slate-500 dark:text-slate-400 sm:block">
+              Analyze your meals with AI
+            </span>
           </span>
         </Link>
-        {children}
+
+        {userEmail && (
+          <div className="flex items-center gap-3">
+            <div className="hidden items-center gap-2 rounded-full border border-slate-200 bg-slate-50 py-1 pl-1 pr-3 dark:border-white/10 dark:bg-white/5 sm:flex">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-indigo-100 text-[11px] font-semibold text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300">
+                {initial}
+              </span>
+              <span className="max-w-[160px] truncate text-xs font-medium text-slate-600 dark:text-slate-300">
+                {userEmail}
+              </span>
+            </div>
+            <LogoutButton />
+          </div>
+        )}
       </div>
     </header>
   );

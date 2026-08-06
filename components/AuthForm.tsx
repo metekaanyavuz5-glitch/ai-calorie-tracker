@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { Mail, CheckCircle2, KeyRound } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 type Status = "idle" | "sending" | "sent" | "verifying";
@@ -60,40 +61,41 @@ export default function AuthForm() {
   if (status === "sent" || status === "verifying") {
     return (
       <div className="space-y-4">
-        <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950 dark:text-emerald-200">
-          <strong>{email}</strong> adresine bir giriş bağlantısı gönderdik. Gelen kutunu kontrol et.
+        <div className="flex items-start gap-2.5 rounded-xl border border-emerald-200 bg-emerald-50 p-3.5 text-sm text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-200">
+          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={2} />
+          <p>
+            <strong>{email}</strong> adresine bir giriş bağlantısı gönderdik. Gelen kutunu kontrol et.
+          </p>
         </div>
 
         <form onSubmit={handleVerifyCode} className="space-y-3">
           <div>
-            <label
-              htmlFor="code"
-              className="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
-            >
+            <label htmlFor="code" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
               Bağlantı çalışmazsa, e-postadaki 6 haneli kodu gir
             </label>
-            <input
-              id="code"
-              type="text"
-              inputMode="numeric"
-              autoComplete="one-time-code"
-              required
-              value={code}
-              onChange={(event) => setCode(event.target.value)}
-              placeholder="123456"
-              className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm outline-none focus:border-neutral-900 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:focus:border-neutral-100"
-            />
+            <div className="relative">
+              <KeyRound className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" strokeWidth={2} />
+              <input
+                id="code"
+                type="text"
+                inputMode="numeric"
+                autoComplete="one-time-code"
+                required
+                value={code}
+                onChange={(event) => setCode(event.target.value)}
+                placeholder="123456"
+                className="w-full rounded-lg border border-slate-200 py-2 pl-9 pr-3 text-sm text-slate-900 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/20 dark:border-white/10 dark:bg-slate-950 dark:text-slate-100"
+              />
+            </div>
           </div>
           <button
             type="submit"
             disabled={status === "verifying" || !code}
-            className="w-full rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-neutral-700 disabled:opacity-50 dark:bg-neutral-100 dark:text-neutral-900"
+            className="w-full rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-indigo-500/25 transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {status === "verifying" ? "Doğrulanıyor..." : "Verify Code"}
           </button>
-          {errorMessage && (
-            <p className="text-sm text-red-600 dark:text-red-400">{errorMessage}</p>
-          )}
+          {errorMessage && <p className="text-sm text-rose-600 dark:text-rose-400">{errorMessage}</p>}
         </form>
 
         <button
@@ -103,7 +105,7 @@ export default function AuthForm() {
             setCode("");
             setErrorMessage("");
           }}
-          className="text-xs text-neutral-400 hover:underline dark:text-neutral-500"
+          className="text-xs text-slate-400 hover:text-slate-600 hover:underline dark:text-slate-500 dark:hover:text-slate-300"
         >
           Farklı e-posta kullan
         </button>
@@ -114,32 +116,30 @@ export default function AuthForm() {
   return (
     <form onSubmit={handleSendLink} className="space-y-3">
       <div>
-        <label
-          htmlFor="email"
-          className="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300"
-        >
+        <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
           E-posta
         </label>
-        <input
-          id="email"
-          type="email"
-          required
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          placeholder="you@example.com"
-          className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm outline-none focus:border-neutral-900 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:focus:border-neutral-100"
-        />
+        <div className="relative">
+          <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" strokeWidth={2} />
+          <input
+            id="email"
+            type="email"
+            required
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            placeholder="you@example.com"
+            className="w-full rounded-lg border border-slate-200 py-2 pl-9 pr-3 text-sm text-slate-900 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/20 dark:border-white/10 dark:bg-slate-950 dark:text-slate-100"
+          />
+        </div>
       </div>
       <button
         type="submit"
         disabled={status === "sending"}
-        className="w-full rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-neutral-700 disabled:opacity-50 dark:bg-neutral-100 dark:text-neutral-900"
+        className="w-full rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-indigo-500/25 transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {status === "sending" ? "Gönderiliyor..." : "Send Magic Link"}
       </button>
-      {errorMessage && (
-        <p className="text-sm text-red-600 dark:text-red-400">{errorMessage}</p>
-      )}
+      {errorMessage && <p className="text-sm text-rose-600 dark:text-rose-400">{errorMessage}</p>}
     </form>
   );
 }

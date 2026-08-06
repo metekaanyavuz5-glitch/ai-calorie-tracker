@@ -1,13 +1,7 @@
 "use client";
 
 import { MEAL_TYPES, type MealType } from "@/lib/types";
-
-const LABELS: Record<MealType, string> = {
-  breakfast: "Breakfast",
-  lunch: "Lunch",
-  dinner: "Dinner",
-  snack: "Snack",
-};
+import { MEAL_TYPE_LABELS, MEAL_TYPE_ICONS } from "@/lib/mealTypeMeta";
 
 export default function MealTypeSelector({
   value,
@@ -20,23 +14,29 @@ export default function MealTypeSelector({
 }) {
   return (
     <div>
-      <p className="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">Meal Type</p>
+      <p className="mb-2 text-sm font-medium text-slate-700 dark:text-slate-300">Meal Type</p>
       <div className="grid grid-cols-4 gap-2">
-        {MEAL_TYPES.map((type) => (
-          <button
-            key={type}
-            type="button"
-            disabled={disabled}
-            onClick={() => onChange(type)}
-            className={`rounded-lg border px-2 py-2 text-xs font-medium transition ${
-              value === type
-                ? "border-blue-600 bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
-                : "border-neutral-200 text-neutral-600 hover:bg-neutral-50 dark:border-neutral-700 dark:text-neutral-400 dark:hover:bg-neutral-800"
-            } disabled:cursor-not-allowed disabled:opacity-50`}
-          >
-            {LABELS[type]}
-          </button>
-        ))}
+        {MEAL_TYPES.map((type) => {
+          const Icon = MEAL_TYPE_ICONS[type];
+          const isActive = value === type;
+          return (
+            <button
+              key={type}
+              type="button"
+              disabled={disabled}
+              onClick={() => onChange(type)}
+              aria-pressed={isActive}
+              className={`flex flex-col items-center gap-1 rounded-xl border px-2 py-2.5 text-xs font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/40 disabled:cursor-not-allowed disabled:opacity-50 ${
+                isActive
+                  ? "border-indigo-200 bg-indigo-50 text-indigo-700 dark:border-indigo-400/30 dark:bg-indigo-500/15 dark:text-indigo-300"
+                  : "border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 dark:border-white/10 dark:text-slate-400 dark:hover:bg-white/5"
+              }`}
+            >
+              <Icon className="h-4 w-4" strokeWidth={2.25} aria-hidden="true" />
+              {MEAL_TYPE_LABELS[type]}
+            </button>
+          );
+        })}
       </div>
     </div>
   );

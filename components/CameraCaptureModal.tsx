@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { X, Camera, AlertCircle } from "lucide-react";
 
 export default function CameraCaptureModal({
   onClose,
@@ -59,30 +60,35 @@ export default function CameraCaptureModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-      <div className="w-full max-w-md rounded-xl bg-white p-4 dark:bg-neutral-900">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm">
+      <div className="w-full max-w-md rounded-2xl bg-white p-5 shadow-xl dark:bg-slate-900">
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-sm font-medium text-neutral-900 dark:text-neutral-50">Take Photo</h2>
+          <h2 className="flex items-center gap-2 text-sm font-semibold text-slate-900 dark:text-white">
+            <Camera className="h-4 w-4 text-indigo-500" strokeWidth={2.25} aria-hidden="true" />
+            Take Photo
+          </h2>
           <button
             onClick={onClose}
-            className="text-sm text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200"
+            aria-label="Close"
+            className="flex h-7 w-7 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-white/10 dark:hover:text-slate-200"
           >
-            Close
+            <X className="h-4 w-4" strokeWidth={2.25} />
           </button>
         </div>
         {error ? (
-          <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+          <p className="flex items-start gap-2 rounded-xl bg-rose-50 px-3 py-2.5 text-sm text-rose-700 dark:bg-rose-950/40 dark:text-rose-300">
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={2} />
             {error}
           </p>
         ) : (
           // eslint-disable-next-line jsx-a11y/media-has-caption
-          <video ref={videoRef} autoPlay playsInline muted className="w-full rounded-lg bg-black" />
+          <video ref={videoRef} autoPlay playsInline muted className="w-full rounded-xl bg-black" />
         )}
         <button
           type="button"
           onClick={handleCapture}
           disabled={!!error}
-          className="mt-3 w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
+          className="mt-3 w-full rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-indigo-500/25 transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Capture
         </button>
